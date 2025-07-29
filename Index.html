@@ -1,112 +1,123 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bluegram</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GloVish</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    :root {
-      --primary-color: #0095f6;
-      --bg-color: #ffffff;
-      --text-color: #262626;
-      --border-color: #dbdbdb;
+    body.dark {
+      background-color: #000;
+      color: #fff;
     }
-
-    body {
-      margin: 0;
-      font-family: 'Roboto', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
+    .dark input, .dark button, .dark textarea, .dark select {
+      background-color: #222;
+      color: #fff;
     }
-
-    header {
-      background-color: var(--bg-color);
-      border-bottom: 1px solid var(--border-color);
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .logo {
-      font-size: 24px;
-      font-weight: bold;
-      color: var(--primary-color);
-    }
-
-    nav a {
-      margin-left: 20px;
-      text-decoration: none;
-      color: var(--text-color);
-      font-weight: 500;
-    }
-
-    .container {
-      max-width: 600px;
-      margin: 20px auto;
-      padding: 0 10px;
-    }
-
-    .post {
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      margin-bottom: 20px;
-      overflow: hidden;
-    }
-
-    .post img {
-      width: 100%;
-      display: block;
-    }
-
-    .post .caption {
-      padding: 10px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      color: #999;
-      font-size: 14px;
-      border-top: 1px solid var(--border-color);
-      margin-top: 40px;
+    img {
+      max-width: 100%;
+      height: auto;
     }
   </style>
 </head>
-<body>
-
-  <header>
-    <div class="logo">Bluegram</div>
-    <nav>
-      <a href="#">Beranda</a>
-      <a href="#">Jelajahi</a>
-      <a href="#">Profil</a>
-    </nav>
-  </header>
-
-  <div class="container">
-    <div class="post">
-      <img src="https://source.unsplash.com/600x400/?nature" alt="Foto">
-      <div class="caption">
-        <strong>@kamu</strong> Menikmati alam sore hari 🌿🌞
-      </div>
+<body class="bg-white text-black">
+  <div class="max-w-md mx-auto pb-20">
+    <div class="p-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">GloVish</h1>
+      <button onclick="toggleTheme()" class="px-3 py-1 bg-blue-500 text-white rounded">Dark Mode</button>
     </div>
 
-    <div class="post">
-      <img src="https://source.unsplash.com/600x400/?city" alt="Foto">
-      <div class="caption">
-        <strong>@kamu</strong> Jalan-jalan di tengah kota biru 🌃
-      </div>
+    <div class="px-4">
+      <h2 class="text-lg font-semibold mb-2">Edit Profil</h2>
+      <input type="text" id="username" placeholder="Username baru" class="border p-2 w-full mb-2 rounded">
+      <input type="file" id="profilePic" class="mb-2 w-full">
+      <button onclick="saveProfile()" class="bg-blue-500 text-white px-4 py-2 w-full rounded">Simpan</button>
+      <div id="profileMsg" class="text-sm mt-2"></div>
+    </div>
+
+    <div class="p-4">
+      <h2 class="text-lg font-semibold mb-2">Feed</h2>
+      <div id="feed" class="space-y-4"></div>
+    </div>
+
+    <div class="p-4">
+      <h2 class="text-lg font-semibold mb-2">🏆 Leaderboard</h2>
+      <div id="leaderboard" class="text-sm space-y-1"></div>
     </div>
   </div>
 
-  <footer>
-    &copy; 2025 Bluegram. Terinspirasi oleh Instagram.
-  </footer>
+  <!-- Bottom Navigation Bar -->
+  <div class="fixed bottom-0 left-0 right-0 bg-white dark:bg-black border-t border-gray-300 dark:border-gray-700 flex justify-around py-2 shadow-md">
+    <button class="flex flex-col items-center text-sm" onclick="location.reload()">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7m-9 2v6m0 0l-7 7 7-7m0 0h6" /></svg>
+      <span>Beranda</span>
+    </button>
+    <button class="flex flex-col items-center text-sm" onclick="document.getElementById('profilePic').click()">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" /></svg>
+      <span>Upload</span>
+    </button>
+    <button class="flex flex-col items-center text-sm" onclick="window.scrollTo(0, document.body.scrollHeight)">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" /></svg>
+      <span>Profil</span>
+    </button>
+  </div>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+    import { getStorage, ref as sRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAgOPD5DDtjExQaVeu6VLFI7CMP9i8VOQw",
+      authDomain: "projectchat01-d16bc.firebaseapp.com",
+      databaseURL: "https://projectchat01-d16bc-default-rtdb.firebaseio.com",
+      projectId: "projectchat01-d16bc",
+      storageBucket: "projectchat01-d16bc.appspot.com",
+      messagingSenderId: "163313653543",
+      appId: "1:163313653543:web:cd1c193158d8a76811bb02",
+      measurementId: "G-VG80CY31FG"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    const auth = getAuth(app);
+    const storage = getStorage(app);
+
+    let currentUser = null;
+    onAuthStateChanged(auth, user => {
+      if (user) currentUser = user;
+    });
+
+    window.saveProfile = async function () {
+      const username = document.getElementById("username").value;
+      const file = document.getElementById("profilePic").files[0];
+      const msg = document.getElementById("profileMsg");
+      msg.textContent = "Menyimpan...";
+
+      if (!currentUser) return (msg.textContent = "Harap login terlebih dahulu");
+
+      const uid = currentUser.uid;
+      let profileURL = null;
+
+      if (file) {
+        const storageRef = sRef(storage, `profile/${uid}.jpg`);
+        await uploadBytes(storageRef, file);
+        profileURL = await getDownloadURL(storageRef);
+      }
+
+      const userRef = ref(db, `users/${uid}`);
+      await set(userRef, {
+        username: username || currentUser.email,
+        profilePic: profileURL || null
+      });
+
+      msg.textContent = "Profil berhasil disimpan!";
+    }
+
+    window.toggleTheme = function () {
+      document.body.classList.toggle('dark');
+    }
+  </script>
 </body>
 </html>
